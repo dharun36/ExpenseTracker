@@ -29,25 +29,39 @@ const Login = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { email, password } = values;
-    setLoading(true);
-    try {
-      const { data } = await axios.post(loginAPI, { email, password });
-      if (data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/");
-        toast.success(data.message, toastOptions);
-      } else {
-        toast.error(data.message, toastOptions);
-      }
-    } catch (err) {
-      toast.error("Something went wrong!", toastOptions);
-    } finally {
-      setLoading(false);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const { email, password } = values;
+  setLoading(true);
+  
+  // Frontend validation
+  if (!email || !password) {
+    toast.error("Please fill in both fields", toastOptions);
+    setLoading(false);
+    return;
+  }
+
+  console.log("Sending request with email:", email, "and password:", password); // Log request data
+
+  try {
+    const { data } = await axios.post(loginAPI, { email, password });
+
+    console.log("Response from server:", data); // Log response data
+
+    if (data.success) {
+      localStorage.setItem("user", JSON.stringify(data.user)); // Consider HTTPOnly cookie for security
+      navigate("/"); // Direct to dashboard or home
+      toast.success(data.message, toastOptions);
+    } else {
+      toast.error(data.message, toastOptions);
     }
-  };
+  } catch (err) {
+    console.error(err.response?.data?.message || "Something went wrong!"); // Log error message
+    toast.error(err.response?.data?.message || "Something went wrong!", toastOptions); // Improved error handling
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
 <div

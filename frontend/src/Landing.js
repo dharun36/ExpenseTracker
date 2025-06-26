@@ -21,7 +21,9 @@ function Hero() {
         <br /><br />
         <div className="hero-buttons">
           <button type="button" aria-label="Explore now">Explore now</button>
-          <button type="button" aria-label="Try it out">Try it out</button>
+          <button type="button" aria-label="Try it out"><Link to="/home" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                        Get Started
+                      </Link></button>
         </div>
       </div>
       <div className="hero-icon" aria-hidden="true">

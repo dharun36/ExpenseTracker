@@ -15,13 +15,13 @@ import Analytics from './Pages/Tran/Analytics';
 const App = () => {
   return (
     
-      <div className="App">
+      <div className="App" style={{margin:'0px',padding:'0px'}}>
       <BrowserRouter>
         <Routes>
-          <Route path="/home" element={<Landing />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Transaction />} />
+          <Route path="/home" element={<Transaction />} />
           <Route path="/recent" element={<RecentTra/>} />
           <Route path="/add" element={<TableData />} />
           <Route path="/analytics" element={<Analytics />} />

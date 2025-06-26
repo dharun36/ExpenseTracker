@@ -42,16 +42,20 @@ useEffect(() => {
         type: type,
       });
 
+      console.log(user._id, frequency, startDate, endDate, type); 
+      console.log(data);
       setTransactions(data.transactions);
       setLoading(false);
       
     } catch (err) {
-      setLoading(true);
+      setLoading(false);
+      console.error(err);
     }
   };
 
   if (localStorage.getItem("user")) {
     fetchAllTransactions();
+    console.log(transactions);
   }
 }, [refresh, frequency, endDate, type, startDate]);
 
@@ -60,10 +64,11 @@ useEffect(() => {
   return (
     <div className="app-container">
       <Header/>
-      <TableData/>
+      <TableData setRefresh={setRefresh}/>
       <main>
         <div className="content">
-          <h2>Recent Transactions</h2>
+          <h2>Recent Transactions</h2> <br/>
+
           <div className="transactions">
             { transactions.map((transactions) => (
           <Card
@@ -137,14 +142,14 @@ const Card = ({
   const handleDeleteClick = async (itemKey) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/v1/deleteTransaction/${itemKey}`,
+        `${deleteTransactions}/${itemKey}`,
         {
           userId: user,
         }
       );
       if (data.success) {
         setRefresh((prev) => !prev);
-        window.location.reload();
+        
       } else {
         console.error("Delete error:", data.message);
       }

@@ -2,7 +2,7 @@
 function Footer() {
   return (
     <footer>
-      <h2>ExpenseTr</h2>
+      <h2>ExpenseTracker</h2>
       <div>
         <p className="footer-info">Info</p>
         <nav aria-label="Footer navigation" className="footer-links">

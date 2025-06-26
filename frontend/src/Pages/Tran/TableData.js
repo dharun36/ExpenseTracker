@@ -11,8 +11,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col } from "react-bootstrap";
 
 const TableData = (props) => {
-    const navigate = useNavigate();
+
   
+    const navigate = useNavigate(); 
     const toastOptions = {
       position: "bottom-right",
       autoClose: 2000,
@@ -73,43 +74,43 @@ const TableData = (props) => {
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const { title, amount, description, category, date, transactionType } = values;
-        window.location.reload(); 
-        if (!title || !amount || !description || !category || !date || !transactionType) {
-            toast.error("Please enter all the fields", toastOptions);
-            return;
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const { title, amount, description, category, date, transactionType } = values;
+
+    if (!title || !amount || !description || !category || !date || !transactionType) {
+        toast.error("Please enter all the fields", toastOptions);
+        return;
+    }
+
+    setLoading(true);
+    try {
+        const { data } = await axios.post(addTransaction, {
+            title,
+            amount,
+            description,
+            category,
+            date,
+            transactionType,
+            userId: cUser._id,
+        });
+        setTransactions(data.transactions);
+        if (data.success) {
+            toast.success(data.message, toastOptions);
+            handleClose();
+            if (props.setRefresh) props.setRefresh((prev) => !prev); // Use setRefresh from props
+        } else {
+            toast.error(data.message, toastOptions);
         }
-        
-        
-        setLoading(true);
-        try {
-            const { data } = await axios.post(addTransaction, {
-                title,
-                amount,
-                description,
-                category,
-                date,
-                transactionType,
-                userId: cUser ._id, // Ensure you are sending the user ID correctly
-            });
-            setRefresh(prev => !prev); 
-            setTransactions(data.transactions);
-            if (data.success) {
-                toast.success(data.message, toastOptions);
-                handleClose();
-                setRefresh((prev) => !prev);
-            } else {
-                toast.error(data.message, toastOptions);
-            }
-        } catch (error) {
-            console.error("Add transaction request failed:", error);
-            toast.error("Failed to add transaction", toastOptions);
-        } finally {
-            setLoading(false);
-        }
-    };
+    } catch (error) {
+        console.error("Add transaction request failed:", error);
+        toast.error("Failed to add transaction", toastOptions);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     const handleEditSubmit = async () => {
         try {
@@ -173,7 +174,7 @@ const TableData = (props) => {
 
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Update Transaction Details</Modal.Title>
+          <Modal.Title>Add Transaction Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>

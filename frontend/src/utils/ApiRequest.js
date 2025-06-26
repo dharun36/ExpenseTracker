@@ -1,4 +1,6 @@
-const host = "http://localhost:5000";
+const host = process.env.REACT_APP_API_HOST;
+console.log("Host"+ host)
+console.log("ENV TEST:", process.env.REACT_APP_API_HOST);
 export const setAvatarAPI = `${host}/api/auth/setAvatar`;
 export const registerAPI = `${host}/api/auth/register`;
 export const loginAPI = `${host}/api/auth/login`;
